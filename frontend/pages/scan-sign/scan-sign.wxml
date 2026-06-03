@@ -1,0 +1,126 @@
+<navigation-bar title="扫码签收" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+<view class="container">
+  <scroll-view class="content-scroll" scroll-y="true">
+    <!-- 扫码模式切换 -->
+    <view class="scan-mode-switch">
+      <view 
+        class="mode-btn {{scanMode === 'pda' ? 'active' : ''}}" 
+        bindtap="switchScanMode"
+        data-mode="pda"
+      >
+        <text class="mode-icon">📱</text>
+        <text class="mode-text">PDA扫码</text>
+      </view>
+      <view 
+        class="mode-btn {{scanMode === 'camera' ? 'active' : ''}}" 
+        bindtap="switchScanMode"
+        data-mode="camera"
+      >
+        <text class="mode-icon">📷</text>
+        <text class="mode-text">摄像头扫码</text>
+      </view>
+    </view>
+
+    <!-- 设备信息 -->
+    <view class="device-info" wx:if="{{deviceInfo}}">
+      <text class="device-name">{{deviceInfo.deviceName}}</text>
+      <text class="device-status">硬件扫码已就绪</text>
+    </view>
+
+    <!-- 扫描状态 -->
+    <view class="scan-status">
+      <view class="status-indicator {{isScanning ? 'scanning' : ''}}"></view>
+      <text class="status-text">{{isScanning ? '扫描中...' : '等待扫码'}}</text>
+      <button class="manual-btn" bindtap="showManualInput">手动输入</button>
+    </view>
+
+    <!-- 运单号显示 -->
+    <view class="tracking-display" wx:if="{{trackingNumber}}">
+      <text class="tracking-label">运单号</text>
+      <text class="tracking-number">{{trackingNumber}}</text>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="order-card" wx:if="{{orderInfo}}">
+      <view class="card-header">
+        <text class="card-title">订单信息</text>
+        <text class="order-status {{orderInfo.status}}">{{orderInfo.statusLabel}}</text>
+      </view>
+      
+      <view class="card-body">
+        <view class="info-row">
+          <text class="info-label">收件人</text>
+          <text class="info-value">{{orderInfo.receiver_name}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">联系电话</text>
+          <text class="info-value">{{orderInfo.receiver_phone}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">收件地址</text>
+          <text class="info-value address">{{orderInfo.receiver_address}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">寄件人</text>
+          <text class="info-value">{{orderInfo.sender_name}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">创建时间</text>
+          <text class="info-value">{{orderInfo.create_time}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-state" wx:if="{{orderLoading}}">
+      <text class="loading-text">查询订单中...</text>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons" wx:if="{{orderInfo && !orderLoading}}">
+      <button 
+        class="sign-btn {{signing ? 'disabled' : ''}}" 
+        bindtap="confirmSign"
+        disabled="{{signing || orderInfo.status === 'delivered'}}"
+      >
+        {{signing ? '签收中...' : (orderInfo.status === 'delivered' ? '已签收' : '确认签收')}}
+      </button>
+      <button 
+        class="print-btn" 
+        bindtap="signAndPrint"
+        disabled="{{signing}}"
+      >
+        签收并打印
+      </button>
+    </view>
+
+    <!-- 历史记录 -->
+    <view class="history-section" wx:if="{{historyList.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">最近签收</text>
+      </view>
+      <view class="history-list">
+        <view 
+          class="history-item" 
+          wx:for="{{historyList}}" 
+          wx:key="index"
+          bindtap="viewHistoryDetail"
+          data-index="{{index}}"
+        >
+          <view class="history-info">
+            <text class="history-tracking">{{item.tracking_number}}</text>
+            <text class="history-receiver">{{item.receiver_name}}</text>
+          </view>
+          <text class="history-arrow">></text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 摄像头扫码按钮 -->
+  <view class="camera-fab" wx:if="{{scanMode === 'camera'}}" bindtap="openCameraScan">
+    <text class="fab-icon">📷</text>
+    <text class="fab-text">扫码</text>
+  </view>
+</view>

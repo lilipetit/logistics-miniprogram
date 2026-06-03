@@ -1,0 +1,25 @@
+{
+  "name": "uni-pda-scanner",
+  "id": "@logistics/uni-pda-scanner",
+  "version": "1.0.0",
+  "description": "PDA扫码SDK集成插件，支持M5/EM5手持终端硬件扫码",
+  "main": "index.js",
+  "dependencies": {},
+  "uni-app": {
+    "plugins": {
+      "scanner": {
+        "scopes": ["PDA_SCANNER"],
+        "android": {
+          "minSdkVersion": 21,
+          "aar": [
+            "libs/e3scanner_v1.3.42.14-release.aar"
+          ],
+          "permissions": [
+            "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
+            "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>"
+          ]
+        }
+      }
+    }
+  }
+}
