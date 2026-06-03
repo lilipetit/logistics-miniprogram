@@ -1,0 +1,111 @@
+<navigation-bar title="打印面单" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+<view class="container">
+  <scroll-view class="content-scroll" scroll-y="true">
+    <!-- 面单预览 -->
+    <view class="label-preview">
+      <view class="preview-title">面单预览</view>
+      
+      <view class="preview-content" wx:if="{{orderData}}">
+        <view class="preview-header">
+          <text class="preview-tracking">{{orderData.trackingNumber}}</text>
+        </view>
+        
+        <view class="preview-section">
+          <view class="section-title">寄件人</view>
+          <view class="section-content">
+            <text class="info-row">姓名: {{orderData.sender.name}}</text>
+            <text class="info-row">电话: {{orderData.sender.phone}}</text>
+            <text class="info-row">地址: {{orderData.sender.address}}</text>
+          </view>
+        </view>
+        
+        <view class="preview-section">
+          <view class="section-title">收件人</view>
+          <view class="section-content">
+            <text class="info-row">姓名: {{orderData.receiver.name}}</text>
+            <text class="info-row">电话: {{orderData.receiver.phone}}</text>
+            <text class="info-row">地址: {{orderData.receiver.address}}</text>
+          </view>
+        </view>
+        
+        <view class="preview-footer">
+          <text class="preview-amount">¥{{orderData.amount}}</text>
+          <text class="preview-time">{{orderData.createTime}}</text>
+        </view>
+      </view>
+      
+      <view class="preview-empty" wx:else>
+        <text>订单数据加载中...</text>
+      </view>
+    </view>
+    
+    <!-- 打印机选择 -->
+    <view class="printer-section">
+      <view class="section-title">蓝牙打印机</view>
+      
+      <view class="printer-status" wx:if="{{selectedPrinter}}">
+        <view class="status-indicator connected"></view>
+        <text class="status-text">已连接: {{selectedPrinter.name}}</text>
+        <button class="change-btn" bindtap="searchPrinters">更换</button>
+      </view>
+      
+      <view class="printer-search" wx:else>
+        <button class="search-btn" bindtap="searchPrinters" disabled="{{isSearching}}">
+          {{isSearching ? '搜索中...' : '搜索打印机'}}
+        </button>
+      </view>
+      
+      <!-- 搜索结果列表 -->
+      <view class="printer-list" wx:if="{{printers.length > 0}}">
+        <view 
+          class="printer-item" 
+          wx:for="{{printers}}" 
+          wx:key="deviceId"
+          bindtap="selectPrinter"
+          data-device-id="{{item.deviceId}}"
+        >
+          <view class="printer-info">
+            <text class="printer-name">{{item.name}}</text>
+            <text class="printer-rssi">信号: {{item.RSSI}}</text>
+          </view>
+          <text class="printer-arrow">></text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 打印历史 -->
+    <view class="history-section" wx:if="{{printHistory.length > 0}}">
+      <view class="section-title">最近打印</view>
+      <view class="history-list">
+        <view 
+          class="history-item" 
+          wx:for="{{printHistory}}" 
+          wx:key="index"
+          bindtap="reprintHistory"
+          data-index="{{index}}"
+        >
+          <view class="history-info">
+            <text class="history-tracking">{{item.trackingNumber}}</text>
+            <text class="history-time">{{item.printTime}}</text>
+          </view>
+          <text class="reprint-btn">重新打印</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button class="copy-btn" bindtap="copyTrackingNumber">
+      复制运单号
+    </button>
+    <button 
+      class="print-btn {{isPrinting ? 'disabled' : ''}}" 
+      bindtap="printLabel"
+      disabled="{{isPrinting || !selectedPrinter}}"
+    >
+      {{isPrinting ? '打印中...' : '打印面单'}}
+    </button>
+  </view>
+</view>
