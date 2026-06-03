@@ -1,0 +1,304 @@
+<navigation-bar title="填写寄件信息" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+<view class="container">
+  <scroll-view
+    class="content-scroll"
+    scroll-y
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+    bounces="{{true}}"
+    scroll-with-animation="{{true}}"
+  >
+    <view class="info-section">
+      <text class="section-title">寄件信息</text>
+
+      <!-- 地址 -->
+      <view class="address-block">
+        <view class="address-input-wrapper">
+          <view class="location-icon">📍</view>
+          <input
+            class="address-input"
+            placeholder="请输入寄件地址"
+            placeholder-class="input-placeholder"
+            value="{{senderAddress}}"
+            data-key="senderAddress"
+            bindfocus="onFieldFocus"
+            bindblur="onFieldBlur"
+            bindinput="onSenderAddressInput"
+          />
+        </view>
+
+        <view wx:if="{{historyKey==='senderAddress' && historyOptions.length>0}}" class="history-dropdown">
+          <view
+            class="history-row"
+            wx:for="{{historyOptions}}"
+            wx:for-item="opt"
+            wx:for-index="idx"
+            wx:key="idx"
+            bindtap="onHistorySelect"
+            data-side="sender"
+            data-field-key="senderAddress"
+            data-record-idx="{{opt.recordIdx}}"
+          >
+            <view class="history-lines">
+              <text class="history-line text-break">地址：{{opt.address}}</text>
+              <text class="history-line text-break">姓名：{{opt.name}}</text>
+              <text class="history-line text-break">电话：{{opt.phone}}</text>
+            </view>
+            <view
+              class="history-del"
+              catchtap="onHistoryDelete"
+              data-side="sender"
+              data-record-idx="{{opt.recordIdx}}"
+            >×</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 姓名 -->
+      <view class="name-input-wrapper">
+        <text class="input-label">姓名</text>
+        <input
+          class="name-input"
+          placeholder="请输入寄件人姓名"
+          placeholder-class="input-placeholder"
+          value="{{senderName}}"
+          data-key="senderName"
+          bindfocus="onFieldFocus"
+          bindblur="onFieldBlur"
+          bindinput="onSenderNameInput"
+        />
+      </view>
+      <view wx:if="{{historyKey==='senderName' && historyOptions.length>0}}" class="history-dropdown">
+        <view
+          class="history-row"
+          wx:for="{{historyOptions}}"
+          wx:for-item="opt"
+          wx:for-index="idx"
+          wx:key="idx"
+          bindtap="onHistorySelect"
+          data-side="sender"
+          data-field-key="senderName"
+          data-record-idx="{{opt.recordIdx}}"
+        >
+          <view class="history-lines">
+            <text class="history-line text-break">地址：{{opt.address}}</text>
+            <text class="history-line text-break">姓名：{{opt.name}}</text>
+            <text class="history-line text-break">电话：{{opt.phone}}</text>
+          </view>
+          <view
+            class="history-del"
+            catchtap="onHistoryDelete"
+            data-side="sender"
+            data-record-idx="{{opt.recordIdx}}"
+          >×</view>
+        </view>
+      </view>
+
+      <!-- 电话 -->
+      <view class="name-input-wrapper">
+        <text class="input-label">电话</text>
+        <input
+          class="name-input"
+          type="number"
+          placeholder="请输入寄件人电话"
+          placeholder-class="input-placeholder"
+          value="{{senderPhone}}"
+          data-key="senderPhone"
+          bindfocus="onFieldFocus"
+          bindblur="onFieldBlur"
+          bindinput="onSenderPhoneInput"
+        />
+      </view>
+      <view wx:if="{{historyKey==='senderPhone' && historyOptions.length>0}}" class="history-dropdown">
+        <view
+          class="history-row"
+          wx:for="{{historyOptions}}"
+          wx:for-item="opt"
+          wx:for-index="idx"
+          wx:key="idx"
+          bindtap="onHistorySelect"
+          data-side="sender"
+          data-field-key="senderPhone"
+          data-record-idx="{{opt.recordIdx}}"
+        >
+          <view class="history-lines">
+            <text class="history-line text-break">地址：{{opt.address}}</text>
+            <text class="history-line text-break">姓名：{{opt.name}}</text>
+            <text class="history-line text-break">电话：{{opt.phone}}</text>
+          </view>
+          <view
+            class="history-del"
+            catchtap="onHistoryDelete"
+            data-side="sender"
+            data-record-idx="{{opt.recordIdx}}"
+          >×</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="info-section">
+      <text class="section-title">收件信息</text>
+
+      <!-- 地址 -->
+      <view class="address-block">
+        <view class="address-input-wrapper">
+          <view class="location-icon">📍</view>
+          <input
+            class="address-input"
+            placeholder="请输入收件地址"
+            placeholder-class="input-placeholder"
+            value="{{receiverAddress}}"
+            data-key="receiverAddress"
+            bindfocus="onFieldFocus"
+            bindblur="onFieldBlur"
+            bindinput="onReceiverAddressInput"
+          />
+        </view>
+        <view wx:if="{{historyKey==='receiverAddress' && historyOptions.length>0}}" class="history-dropdown">
+          <view
+            class="history-row"
+            wx:for="{{historyOptions}}"
+            wx:for-item="opt"
+            wx:for-index="idx"
+            wx:key="idx"
+            bindtap="onHistorySelect"
+            data-side="receiver"
+            data-field-key="receiverAddress"
+            data-record-idx="{{opt.recordIdx}}"
+          >
+            <view class="history-lines">
+              <text class="history-line text-break">地址：{{opt.address}}</text>
+              <text class="history-line text-break">姓名：{{opt.name}}</text>
+              <text class="history-line text-break">电话：{{opt.phone}}</text>
+            </view>
+            <view
+              class="history-del"
+              catchtap="onHistoryDelete"
+              data-side="receiver"
+              data-record-idx="{{opt.recordIdx}}"
+            >×</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 姓名 -->
+      <view class="name-input-wrapper">
+        <text class="input-label">姓名</text>
+        <input
+          class="name-input"
+          placeholder="请输入收件人姓名"
+          placeholder-class="input-placeholder"
+          value="{{receiverName}}"
+          data-key="receiverName"
+          bindfocus="onFieldFocus"
+          bindblur="onFieldBlur"
+          bindinput="onReceiverNameInput"
+        />
+      </view>
+      <view wx:if="{{historyKey==='receiverName' && historyOptions.length>0}}" class="history-dropdown">
+        <view
+          class="history-row"
+          wx:for="{{historyOptions}}"
+          wx:for-item="opt"
+          wx:for-index="idx"
+          wx:key="idx"
+          bindtap="onHistorySelect"
+          data-side="receiver"
+          data-field-key="receiverName"
+          data-record-idx="{{opt.recordIdx}}"
+        >
+          <view class="history-lines">
+            <text class="history-line text-break">地址：{{opt.address}}</text>
+            <text class="history-line text-break">姓名：{{opt.name}}</text>
+            <text class="history-line text-break">电话：{{opt.phone}}</text>
+          </view>
+          <view
+            class="history-del"
+            catchtap="onHistoryDelete"
+            data-side="receiver"
+            data-record-idx="{{opt.recordIdx}}"
+          >×</view>
+        </view>
+      </view>
+
+      <!-- 电话 -->
+      <view class="name-input-wrapper">
+        <text class="input-label">电话</text>
+        <input
+          class="name-input"
+          type="number"
+          placeholder="请输入收件人电话"
+          placeholder-class="input-placeholder"
+          value="{{receiverPhone}}"
+          data-key="receiverPhone"
+          bindfocus="onFieldFocus"
+          bindblur="onFieldBlur"
+          bindinput="onReceiverPhoneInput"
+        />
+      </view>
+      <view wx:if="{{historyKey==='receiverPhone' && historyOptions.length>0}}" class="history-dropdown">
+        <view
+          class="history-row"
+          wx:for="{{historyOptions}}"
+          wx:for-item="opt"
+          wx:for-index="idx"
+          wx:key="idx"
+          bindtap="onHistorySelect"
+          data-side="receiver"
+          data-field-key="receiverPhone"
+          data-record-idx="{{opt.recordIdx}}"
+        >
+          <view class="history-lines">
+            <text class="history-line text-break">地址：{{opt.address}}</text>
+            <text class="history-line text-break">姓名：{{opt.name}}</text>
+            <text class="history-line text-break">电话：{{opt.phone}}</text>
+          </view>
+          <view
+            class="history-del"
+            catchtap="onHistoryDelete"
+            data-side="receiver"
+            data-record-idx="{{opt.recordIdx}}"
+          >×</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="info-section">
+      <text class="section-title">货品信息</text>
+
+      <view class="product-select-wrapper">
+        <text class="input-label">选择货品数量</text>
+        <view class="product-counter">
+          <view class="counter-btn" bindtap="decreaseProduct">-</view>
+          <text class="counter-value">{{productCount}}</text>
+          <view class="counter-btn" bindtap="increaseProduct">+</view>
+        </view>
+      </view>
+
+      <view class="unit-price-wrapper">
+        <text class="input-label">单价（每件）</text>
+        <view class="unit-price-input-wrapper">
+          <input
+            class="unit-price-input"
+            type="number"
+            placeholder="请输入单价，例如 2.00"
+            placeholder-class="input-placeholder"
+            value="{{unitPrice}}"
+            bindinput="onUnitPriceInput"
+            bindblur="onUnitPriceBlur"
+          />
+        </view>
+      </view>
+
+      <view class="price-display" wx:if="{{productCount > 0}}">
+        <text class="price-label">单价：¥{{unitPrice}} × {{productCount}}件 = </text>
+        <text class="price-value">¥{{totalPrice}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="calculate-btn-wrapper">
+    <button class="calculate-btn" bindtap="calculateShipping">计算运费</button>
+  </view>
+</view>

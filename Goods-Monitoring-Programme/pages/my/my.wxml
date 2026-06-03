@@ -1,0 +1,89 @@
+<navigation-bar title="我的" back="{{true}}" color="white" background="#000000"></navigation-bar>
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-info-section">
+    <view class="user-avatar">
+      <text class="avatar-text">{{userInfo.username ? userInfo.username.charAt(0) : 'U'}}</text>
+    </view>
+    <view class="user-details">
+      <text class="user-name">{{userInfo.username || '用户'}}</text>
+      <text class="user-phone">{{userInfo.phone || ''}}</text>
+      <text class="user-role">{{roleText}}</text>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="function-section">
+    <!-- 快递查询 -->
+    <view class="function-item" bindtap="queryPackage">
+      <view class="function-icon query-icon">🔍</view>
+      <text class="function-text">快递查询</text>
+      <text class="function-arrow">></text>
+    </view>
+
+    <!-- 用户注销 -->
+    <view class="function-item" bindtap="showLogoutConfirm">
+      <view class="function-icon logout-icon">🚪</view>
+      <text class="function-text">用户注销</text>
+      <text class="function-arrow">></text>
+    </view>
+  </view>
+</view>
+
+<!-- 快递查询弹窗 -->
+<view class="query-modal {{showQueryModal ? 'show' : ''}}" catchtap="hideQueryModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">快递查询</text>
+      <text class="modal-close" bindtap="hideQueryModal">×</text>
+    </view>
+    <view class="modal-body">
+      <view class="query-input-wrapper">
+        <input 
+          class="query-input" 
+          type="text" 
+          placeholder="请输入或粘贴快递单号" 
+          placeholder-class="input-placeholder"
+          value="{{queryNumber}}"
+          bindinput="onQueryInput"
+        />
+        <button class="query-btn" bindtap="doQuery">查询</button>
+      </view>
+      <text class="query-paste-hint">支持长按输入框粘贴单号</text>
+      <view class="query-result" wx:if="{{queryResult}}">
+        <view class="result-item result-item--copy">
+          <text class="result-label">快递单号</text>
+          <view class="result-right">
+            <text class="result-value text-break">{{queryResult.trackingNumber}}</text>
+            <text class="copy-btn" bindtap="onCopyText" data-text="{{queryResult.trackingNumber}}">复制</text>
+          </view>
+        </view>
+        <view class="result-item result-item--copy">
+          <text class="result-label">订单号</text>
+          <view class="result-right">
+            <text class="result-value text-break">{{queryResult.orderNumber}}</text>
+            <text class="copy-btn" bindtap="onCopyText" data-text="{{queryResult.orderNumber}}">复制</text>
+          </view>
+        </view>
+        <view class="result-item">
+          <text class="result-label">状态:</text>
+          <text class="result-value status-{{queryResult.status}}">{{statusText}}</text>
+        </view>
+        <view class="result-item" wx:if="{{queryResult.receiverAddress}}">
+          <text class="result-label">收件地址:</text>
+          <text class="result-value">{{queryResult.receiverAddress}}</text>
+        </view>
+        <view class="result-item" wx:if="{{queryResult.createTime}}">
+          <text class="result-label">创建时间:</text>
+          <text class="result-value">{{queryResult.createTime}}</text>
+        </view>
+        <view class="result-actions">
+          <button class="view-detail-btn" bindtap="viewQueryDetail">查看详情</button>
+        </view>
+      </view>
+      <view class="query-empty" wx:if="{{queryError}}">
+        <text class="empty-text">{{queryError}}</text>
+      </view>
+    </view>
+  </view>
+</view>

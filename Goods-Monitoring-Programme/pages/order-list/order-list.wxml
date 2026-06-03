@@ -1,0 +1,65 @@
+<navigation-bar title="订单列表" back="{{true}}" color="white" background="#000000"></navigation-bar>
+<view class="container">
+  <!-- 订单列表 -->
+  <view class="order-section">
+    <view class="section-header">
+      <text class="section-title">待支付订单</text>
+      <view class="select-all-wrapper">
+        <text class="select-all-text" bindtap="toggleSelectAll">全选</text>
+      </view>
+    </view>
+    
+    <view class="order-list">
+      <view 
+        class="order-item {{item.selected ? 'selected' : ''}}" 
+        wx:for="{{pendingOrders}}" 
+        wx:key="id"
+        bindtap="toggleOrder"
+        data-index="{{index}}"
+      >
+        <view class="order-checkbox">
+          <view class="checkbox {{item.selected ? 'checked' : ''}}">
+            <text wx:if="{{item.selected}}" class="checkmark">✓</text>
+          </view>
+        </view>
+        <view class="order-content">
+          <view class="order-header">
+            <text class="order-number">订单号: {{item.orderNumber}}</text>
+            <text class="order-price">¥{{item.amount}}</text>
+          </view>
+          <view class="order-info">
+            <text class="order-label">收件人:</text>
+            <text class="order-value">{{item.receiverName}}</text>
+          </view>
+          <view class="order-info">
+            <text class="order-label">货品数量:</text>
+            <text class="order-value">{{item.productCount}}件</text>
+          </view>
+          <view class="order-info">
+            <text class="order-label">创建时间:</text>
+            <text class="order-value">{{item.createTime}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-tip" wx:if="{{pendingOrders.length === 0}}">
+        <text class="empty-text">暂无待支付订单</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部统计和支付 -->
+  <view class="bottom-bar">
+    <view class="total-info">
+      <text class="total-label">已选 {{selectedCount}} 单</text>
+      <text class="total-price">总计: ¥{{totalPrice}}</text>
+    </view>
+    <button 
+      class="pay-btn {{selectedCount > 0 ? 'active' : 'disabled'}}" 
+      bindtap="goToPayment"
+      disabled="{{selectedCount === 0}}"
+    >
+      去支付
+    </button>
+  </view>
+</view>

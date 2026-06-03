@@ -1,0 +1,53 @@
+<navigation-bar title="登录注册" back="{{false}}" color="white" background="#000000"></navigation-bar>
+<view class="container">
+  <!-- Logo区域 -->
+  <view class="logo-section">
+    <image class="logo-image" src="/logo.jpg" mode="aspectFit"></image>
+    <!-- 品牌文字如需显示可取消下面注释
+    <view class="brand-name">
+      <text class="brand-text">鑫沙物流</text>
+    </view>
+    -->
+  </view>
+
+  <!-- 输入区域 -->
+  <view class="input-section">
+    <view class="input-wrapper">
+      <view class="input-icon">👤</view>
+      <input 
+        class="input-field" 
+        type="number" 
+        placeholder="手机号输入" 
+        placeholder-class="input-placeholder"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+      />
+    </view>
+    <view class="input-wrapper">
+      <view class="input-icon">🔒</view>
+      <input 
+        class="input-field" 
+        type="text"
+        password="{{!showPassword}}"
+        placeholder="密码" 
+        placeholder-class="input-placeholder"
+        value="{{password}}"
+        bindinput="onPasswordInput"
+      />
+      <view class="password-toggle" bindtap="togglePassword">
+        <text class="toggle-icon">{{showPassword ? '👁️' : '👁️‍🗨️'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登录按钮 -->
+  <view class="login-btn-wrapper">
+    <button class="login-btn" bindtap="handleLogin">登录</button>
+  </view>
+
+  <!-- 注册链接 -->
+  <view class="register-link">
+    <text class="register-text">还没有账号?</text>
+    <text class="register-link-text" bindtap="goToRegister">立即注册</text>
+  </view>
+</view>

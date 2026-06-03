@@ -1,0 +1,126 @@
+<view class="page-om">
+  <navigation-bar title="订单管理" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+  <scroll-view class="om-scroll" scroll-y enhanced show-scrollbar="{{true}}">
+    <view class="om-inner">
+      <view class="summary-row">
+        <view class="summary-cell">
+          <text class="summary-label">今日订单</text>
+          <text class="summary-val">{{todayCount}}</text>
+        </view>
+        <view class="summary-cell">
+          <text class="summary-label">订单总数</text>
+          <text class="summary-val">{{totalCount}}</text>
+        </view>
+        <view class="summary-cell">
+          <text class="summary-label">待分配</text>
+          <text class="summary-val highlight">{{pendingAssignCount}}</text>
+        </view>
+      </view>
+
+      <view class="search-row">
+        <input
+          class="search-input"
+          placeholder="搜索：单号 / 订单号 / 客户 / 收件人 / 电话"
+          placeholder-class="search-placeholder"
+          value="{{keyword}}"
+          bindinput="onKeywordInput"
+        />
+      </view>
+
+      <view class="filter-block">
+        <text class="filter-title">订单状态</text>
+        <view class="filters">
+          <view class="filter {{statusFilter==='all'?'active':''}}" data-status="all" bindtap="setStatusFilter">全部</view>
+          <view class="filter {{statusFilter==='pending'?'active':''}}" data-status="pending" bindtap="setStatusFilter">待处理</view>
+          <view class="filter {{statusFilter==='received'?'active':''}}" data-status="received" bindtap="setStatusFilter">已接收</view>
+          <view class="filter {{statusFilter==='transit'?'active':''}}" data-status="transit" bindtap="setStatusFilter">运输中</view>
+          <view class="filter {{statusFilter==='delivered'?'active':''}}" data-status="delivered" bindtap="setStatusFilter">已送达</view>
+        </view>
+      </view>
+
+      <view class="filter-block">
+        <text class="filter-title">支付状态</text>
+        <view class="filters">
+          <view class="filter {{payFilter==='all'?'active':''}}" data-pay="all" bindtap="setPayFilter">全部</view>
+          <view class="filter {{payFilter==='pending'?'active':''}}" data-pay="pending" bindtap="setPayFilter">待支付</view>
+          <view class="filter {{payFilter==='success'?'active':''}}" data-pay="success" bindtap="setPayFilter">已支付</view>
+          <view class="filter {{payFilter==='failed'?'active':''}}" data-pay="failed" bindtap="setPayFilter">失败</view>
+        </view>
+      </view>
+
+      <view class="toolbar">
+        <button class="btn-export" bindtap="exportOrdersCsv">导出订单 CSV</button>
+        <view class="btn-refresh" bindtap="onRefreshTap">刷新</view>
+      </view>
+
+      <view class="sub-title">待分配快递员</view>
+      <view class="pending-list">
+        <view class="pending-card" wx:for="{{pendingOrders}}" wx:key="id">
+          <view class="pending-card__top">
+            <text class="pending-card__idx">{{index + 1}}</text>
+            <view class="pending-card__info">
+              <text class="pending-card__name">{{item.userName || '客户'}}</text>
+              <text class="pending-card__no">{{item.orderNumber || item.trackingNumber || '-'}}</text>
+            </view>
+          </view>
+          <view class="pending-card__actions">
+            <button class="btn-secondary" bindtap="viewDetail" data-id="{{item.id}}">详情</button>
+            <button class="btn-primary" bindtap="assignCourier" data-id="{{item.id}}">分配快递员</button>
+          </view>
+        </view>
+        <view class="empty empty--small" wx:if="{{pendingOrders.length===0}}">
+          <text class="empty-text">暂无待分配</text>
+        </view>
+      </view>
+
+      <view class="sub-title">全部物流订单（{{filteredOrders.length}}）</view>
+      <view class="order-list">
+        <view class="order-card" wx:for="{{filteredOrders}}" wx:key="id">
+          <view class="order-main" bindtap="viewDetail" data-id="{{item.id}}">
+            <view class="order-line">
+              <text class="order-key">单号</text>
+              <text class="order-val em">{{item.trackingNumber || '-'}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">订单</text>
+              <text class="order-val">{{item.orderNumber || '-'}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">金额</text>
+              <text class="order-val">¥{{item.amount != null ? item.amount : '-'}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">客户</text>
+              <text class="order-val">{{item.userName || '-'}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">收件</text>
+              <text class="order-val">{{item.receiverName || '-'}} {{item.receiverPhone || ''}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">快递员</text>
+              <text class="order-val">{{item.courierName || '未分配'}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">状态</text>
+              <text class="order-val pill status-{{item.status}}">{{item.statusLabel}}</text>
+            </view>
+            <view class="order-line">
+              <text class="order-key">支付</text>
+              <text class="order-val pill pay-{{item.paymentStatus || 'pending'}}">{{item.paymentLabel}}</text>
+            </view>
+          </view>
+          <view class="order-ops">
+            <button class="mini-btn" bindtap="changeOrderStatus" data-id="{{item.id}}">改状态</button>
+            <button class="mini-btn pay" bindtap="changePaymentStatus" data-id="{{item.id}}">改支付</button>
+            <button class="mini-btn danger" bindtap="deleteOrder" data-id="{{item.id}}">删除</button>
+          </view>
+        </view>
+        <view class="empty" wx:if="{{filteredOrders.length===0}}">
+          <text class="empty-text">无匹配订单</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

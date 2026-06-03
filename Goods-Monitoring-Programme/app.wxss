@@ -1,0 +1,48 @@
+/**app.wxss — 全局布局与安全区，统一各机型的边距与底部避让**/
+
+page {
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+
+  /* 750 设计稿下统一水平边距，窄屏不致贴边、宽屏不致过散 */
+  --page-pad-h: 48rpx;
+  /* 底部固定栏高度（与各页 wxss 中 tab/工具条一致） */
+  --bar-tab: 120rpx;
+  --bar-order: 140rpx;
+  /* 底部主按钮区：上内边距 + 按钮高 + 下内边距 */
+  --bar-cta: 148rpx;
+  --bar-cta-tall: 160rpx;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* 全局颜色变量 */
+:root {
+  --primary-color: #ff6b00;
+  --secondary-color: #ffb800;
+  --bg-dark: #000000;
+  --bg-gray: #1a1a1a;
+  --text-white: #ffffff;
+  --text-gray: #cccccc;
+}
+
+/* 输入框最小字号，减轻 iOS 输入框聚焦放大 */
+input,
+textarea {
+  font-size: 30rpx;
+}
+
+/* 长文本/单号在小屏换行，避免撑出横向滚动 */
+.text-break {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}

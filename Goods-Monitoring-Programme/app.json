@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/print/print",
+    "pages/scan-sign/scan-sign",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/send-package/send-package",
+    "pages/fill-info/fill-info",
+    "pages/order-list/order-list",
+    "pages/payment/payment",
+    "pages/payment-success/payment-success",
+    "pages/payment-qrcode/payment-qrcode",
+    "pages/courier-center/courier-center",
+    "pages/courier-package-entry/courier-package-entry",
+    "pages/update-status/update-status",
+    "pages/admin-center/admin-center",
+    "pages/admin-stats/admin-stats",
+    "pages/order-manage/order-manage",
+    "pages/my/my"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationStyle": "custom",
+    "backgroundColor": "#000000"
+  },
+  "style": "v2",
+  "renderer": "skyline",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "defaultContentBox": true,
+      "tagNameStyleIsolation": "legacy",
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

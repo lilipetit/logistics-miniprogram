@@ -1,0 +1,53 @@
+<view class="page-stats">
+  <navigation-bar title="数据统计" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+  <scroll-view class="stats-scroll" scroll-y enhanced show-scrollbar="{{true}}">
+    <view class="stats-inner">
+      <text class="hint">展示近 {{days}} 天本地快照；角色人数为当前账号库实时数量，订单按创建日统计。</text>
+
+      <view class="role-grid">
+        <view class="role-card">
+          <text class="role-label">用户</text>
+          <text class="role-num">{{roles.user}}</text>
+        </view>
+        <view class="role-card">
+          <text class="role-label">司机</text>
+          <text class="role-num">{{roles.courier}}</text>
+        </view>
+        <view class="role-card">
+          <text class="role-label">管理员</text>
+          <text class="role-num">{{roles.admin}}</text>
+        </view>
+      </view>
+
+      <view class="section-title">按日明细（{{days}} 天）</view>
+
+      <view class="day-list">
+        <view class="day-card" wx:for="{{rows}}" wx:key="date">
+          <view class="day-head">
+            <text class="day-date">{{item.date}}</text>
+            <text class="day-orders">订单 {{item.orderCount}} 笔</text>
+          </view>
+          <view class="day-metrics">
+            <text class="metric">已付 ¥{{item.paidAmount}}</text>
+            <text class="metric">待付 {{item.pendingPayCount}} 笔</text>
+          </view>
+          <view class="day-status">
+            <text class="pill">待处理 {{item.statusPending}}</text>
+            <text class="pill">已接收 {{item.statusReceived}}</text>
+            <text class="pill">运输 {{item.statusTransit}}</text>
+            <text class="pill">已送达 {{item.statusDelivered}}</text>
+          </view>
+          <view class="day-roles">
+            <text class="rline">用户 {{item.usersUser}} · 司机 {{item.usersCourier}} · 管理员 {{item.usersAdmin}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="export-wrap">
+        <button class="btn-export" bindtap="exportExcel">一键导出 Excel（CSV）</button>
+        <button class="btn-copy" bindtap="copyCsv">复制表格到剪贴板</button>
+      </view>
+    </view>
+  </scroll-view>
+</view>

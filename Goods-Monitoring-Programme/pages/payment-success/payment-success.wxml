@@ -1,0 +1,22 @@
+<navigation-bar title="支付成功" back="{{true}}" color="white" background="#000000"></navigation-bar>
+<view class="container">
+  <!-- 成功图标 -->
+  <view class="success-icon-wrapper">
+    <view class="success-circle">
+      <text class="checkmark">✓</text>
+    </view>
+  </view>
+
+  <!-- 成功文字 -->
+  <view class="success-text-section">
+    <text class="success-title">支付成功</text>
+    <text class="success-subtitle">订单生成!</text>
+    <text class="order-number">{{orderNumber}}</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="view-order-btn" bindtap="viewOrder">查看订单</button>
+    <button class="back-home-btn" bindtap="backToHome">返回首页</button>
+  </view>
+</view>

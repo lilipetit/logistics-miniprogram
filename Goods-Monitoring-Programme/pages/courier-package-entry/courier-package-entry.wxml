@@ -1,0 +1,32 @@
+<navigation-bar title="包裹录入" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+<view class="page">
+  <view class="hint-card">
+    <text class="hint-title">扫码 / 手动录入</text>
+    <text class="hint-desc">若 EM5 为 HID 键盘模式：先点击下方输入框聚焦，再扣扳机扫码（通常自动回车确认）。也可直接手输单号；支持长按输入框粘贴单号。</text>
+  </view>
+
+  <view class="field-block">
+    <text class="field-label">条码 / 单号</text>
+    <input
+      class="field-input"
+      value="{{inputValue}}"
+      placeholder="点击此处后扫码，或手动输入/粘贴"
+      placeholder-class="input-placeholder"
+      focus="{{inputFocus}}"
+      confirm-type="done"
+      bindinput="onInput"
+      bindconfirm="onConfirm"
+      bindfocus="onFocus"
+    />
+  </view>
+
+  <view class="preview-block" wx:if="{{normalizedPreview}}">
+    <text class="preview-label">将保存为（XS 开头）</text>
+    <text class="preview-value text-break">{{normalizedPreview}}</text>
+  </view>
+
+  <view class="actions">
+    <button class="btn-primary" bindtap="submitManual" disabled="{{submitting}}">确认录入</button>
+  </view>
+</view>

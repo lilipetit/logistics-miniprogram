@@ -1,0 +1,22 @@
+<navigation-bar title="{{methodTitle}}" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+<view class="page">
+  <view class="amount-section">
+    <text class="amount-value">¥{{amount}}</text>
+    <text class="amount-sub">订单：{{orderCode}}</text>
+    <text class="amount-sub" wx:if="{{isBatch}}">共 {{orderCount}} 个订单</text>
+  </view>
+
+  <view class="qr-wrap">
+    <image
+      class="qr-image"
+      src="{{qrSrc}}"
+      mode="widthFix"
+      binderror="onQrImageError"
+    ></image>
+  </view>
+
+  <view class="pay-actions">
+    <button class="pay-btn" bindtap="confirmPayment">确认支付</button>
+  </view>
+</view>

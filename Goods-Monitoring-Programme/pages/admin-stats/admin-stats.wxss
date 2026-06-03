@@ -1,0 +1,184 @@
+page {
+  height: 100%;
+  background-color: #000000;
+}
+
+.page-stats {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.stats-scroll {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stats-inner {
+  padding: 16rpx var(--page-pad-h) calc(48rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.hint {
+  display: block;
+  font-size: 24rpx;
+  color: #888888;
+  line-height: 1.5;
+  margin-bottom: 28rpx;
+}
+
+.role-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+  margin-bottom: 36rpx;
+}
+
+.role-card {
+  flex: 1;
+  min-width: 0;
+  background-color: #1a1a1a;
+  border-radius: 16rpx;
+  padding: 24rpx 16rpx;
+  border: 1rpx solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  box-sizing: border-box;
+}
+
+.role-label {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.role-num {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #ffb800;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 20rpx;
+}
+
+.day-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+
+.day-card {
+  background-color: #1a1a1a;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  border: 1rpx solid #2a2a2a;
+  box-sizing: border-box;
+}
+
+.day-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+  gap: 16rpx;
+}
+
+.day-date {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.day-orders {
+  font-size: 26rpx;
+  color: #ff6b00;
+  flex-shrink: 0;
+}
+
+.day-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.metric {
+  font-size: 26rpx;
+  color: #cccccc;
+}
+
+.day-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.pill {
+  font-size: 22rpx;
+  color: #ffffff;
+  background-color: rgba(255, 107, 0, 0.15);
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid rgba(255, 107, 0, 0.35);
+}
+
+.day-roles {
+  padding-top: 8rpx;
+  border-top: 1rpx solid #333333;
+}
+
+.rline {
+  font-size: 22rpx;
+  color: #888888;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.export-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  padding-top: 8rpx;
+}
+
+.btn-export {
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 48rpx;
+  background: linear-gradient(180deg, #ff8c00 0%, #ff6b00 100%);
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-export::after {
+  border: none;
+}
+
+.btn-copy {
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 44rpx;
+  background-color: #2a2a2a;
+  color: #ffffff;
+  font-size: 28rpx;
+  border: 1rpx solid #444444;
+}
+
+.btn-copy::after {
+  border: none;
+}

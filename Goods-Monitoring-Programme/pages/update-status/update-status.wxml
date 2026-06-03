@@ -1,0 +1,86 @@
+<navigation-bar title="更新快递状态" back="{{true}}" color="white" background="#000000"></navigation-bar>
+<view class="page-update-status">
+  <scroll-view
+    class="update-scroll"
+    scroll-y
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+    bounces="{{true}}"
+  >
+    <view class="scroll-inner">
+  <!-- 快递单号 -->
+  <view class="tracking-section">
+    <view class="tracking-row">
+      <text class="tracking-label text-break">快递单号：{{trackingNumber}}</text>
+      <view class="copy-btn" bindtap="copyTrackingNumber">复制</view>
+    </view>
+  </view>
+
+  <!-- 状态时间线 -->
+  <view class="status-timeline">
+    <view 
+      class="status-item {{currentStatus === 'received' ? 'active' : ''}} {{canEdit ? '' : 'readonly'}}"
+      bindtap="{{canEdit ? 'updateStatus' : ''}}"
+      data-status="received"
+    >
+      <view class="status-circle"></view>
+      <text class="status-text">已接收</text>
+    </view>
+    <view class="timeline-line"></view>
+    <view 
+      class="status-item {{currentStatus === 'transit' ? 'active' : ''}} {{canEdit ? '' : 'readonly'}}"
+      bindtap="{{canEdit ? 'updateStatus' : ''}}"
+      data-status="transit"
+    >
+      <view class="status-circle"></view>
+      <text class="status-text">运输中</text>
+    </view>
+    <view class="timeline-line"></view>
+    <view 
+      class="status-item {{currentStatus === 'delivered' ? 'active' : ''}} {{canEdit ? '' : 'readonly'}}"
+      bindtap="{{canEdit ? 'updateStatus' : ''}}"
+      data-status="delivered"
+    >
+      <view class="status-circle"></view>
+      <text class="status-text">已送达</text>
+    </view>
+  </view>
+  
+  <!-- 权限提示 -->
+  <view class="permission-tip" wx:if="{{!canEdit}}">
+    <text class="tip-text">您只能查看快递状态，无法修改</text>
+  </view>
+
+  <!-- 当前状态详情 -->
+  <view class="details-section">
+    <text class="details-title">当前状态详情</text>
+    <view class="detail-item">
+      <text class="detail-label">派件人</text>
+      <text class="detail-value">{{courierName || '-'}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">收件人</text>
+      <text class="detail-value">{{receiverName || '-'}}</text>
+      <text class="detail-arrow">></text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">联系电话</text>
+      <text class="detail-value">{{receiverPhone || '-'}}</text>
+      <text class="detail-arrow">></text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">地址</text>
+      <text class="detail-value">{{receiverAddress || '-'}}</text>
+      <text class="detail-arrow">></text>
+    </view>
+  </view>
+    </view>
+  </scroll-view>
+
+  <!-- 操作按钮（仅快递员可见） -->
+  <view class="action-buttons" wx:if="{{canEdit && userRole === 'courier'}}">
+    <button class="action-btn" bindtap="confirmReceive">已接收</button>
+    <button class="action-btn" bindtap="startTransit">运输中</button>
+    <button class="action-btn" bindtap="confirmDelivery">已送达</button>
+  </view>
+</view>

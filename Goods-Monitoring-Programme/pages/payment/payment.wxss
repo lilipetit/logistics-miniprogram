@@ -1,0 +1,117 @@
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000000;
+  padding: 32rpx var(--page-pad-h) calc(var(--bar-cta-tall) + env(safe-area-inset-bottom));
+}
+
+.amount-section {
+  text-align: center;
+  padding: 80rpx 0;
+}
+
+.amount-value {
+  display: block;
+  color: #FFB800;
+  font-size: 80rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.amount-code {
+  display: block;
+  color: #FFB800;
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+}
+
+.amount-count {
+  display: block;
+  color: #999999;
+  font-size: 24rpx;
+}
+
+.payment-methods {
+  margin-bottom: 60rpx;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  background-color: #1A1A1A;
+  border-radius: 20rpx;
+  padding: 30rpx 40rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx solid transparent;
+}
+
+.payment-item.active {
+  border-color: #FF6B00;
+  background-color: #1A1A1A;
+}
+
+.payment-icon {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 30rpx;
+  border-radius: 50%;
+  background-color: #333333;
+}
+
+.wechat-icon {
+  background-color: #07C160;
+}
+
+.alipay-icon {
+  background-color: #1677FF;
+}
+
+.bank-icon,
+.bank-icon2 {
+  background-color: #666666;
+}
+
+.payment-text {
+  flex: 1;
+  color: #FFFFFF;
+  font-size: 32rpx;
+}
+
+.payment-item.active .payment-text {
+  color: #FF6B00;
+}
+
+.payment-arrow {
+  color: #666666;
+  font-size: 32rpx;
+}
+
+.confirm-btn-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 30rpx var(--page-pad-h);
+  padding-bottom: calc(30rpx + env(safe-area-inset-bottom));
+  background-color: #000000;
+}
+
+.confirm-btn {
+  width: 100%;
+  height: 100rpx;
+  background-color: #FF6B00;
+  border-radius: 50rpx;
+  color: #FFFFFF;
+  font-size: 36rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.confirm-btn::after {
+  border: none;
+}

@@ -1,0 +1,54 @@
+<navigation-bar title="支付运费" back="{{true}}" color="white" background="#000000"></navigation-bar>
+<view class="container">
+  <!-- 金额显示 -->
+  <view class="amount-section">
+    <text class="amount-value">¥{{amount}}</text>
+    <text class="amount-code">{{orderCode}}</text>
+    <text class="amount-count" wx:if="{{isBatch}}">共 {{orderCount}} 个订单</text>
+  </view>
+
+  <!-- 支付方式 -->
+  <view class="payment-methods">
+    <view 
+      class="payment-item {{selectedMethod === 'wechat' ? 'active' : ''}}"
+      bindtap="selectPayment"
+      data-method="wechat"
+    >
+      <view class="payment-icon wechat-icon"></view>
+      <text class="payment-text">微信支付</text>
+      <text class="payment-arrow">></text>
+    </view>
+    <view 
+      class="payment-item {{selectedMethod === 'alipay' ? 'active' : ''}}"
+      bindtap="selectPayment"
+      data-method="alipay"
+    >
+      <view class="payment-icon alipay-icon"></view>
+      <text class="payment-text">支付宝支付</text>
+      <text class="payment-arrow">></text>
+    </view>
+    <view 
+      class="payment-item {{selectedMethod === 'bank1' ? 'active' : ''}}"
+      bindtap="selectPayment"
+      data-method="bank1"
+    >
+      <view class="payment-icon bank-icon"></view>
+      <text class="payment-text">银行卡支付</text>
+      <text class="payment-arrow">></text>
+    </view>
+    <view 
+      class="payment-item {{selectedMethod === 'bank2' ? 'active' : ''}}"
+      bindtap="selectPayment"
+      data-method="bank2"
+    >
+      <view class="payment-icon bank-icon2"></view>
+      <text class="payment-text">银行卡支付</text>
+      <text class="payment-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 确认支付按钮 -->
+  <view class="confirm-btn-wrapper">
+    <button class="confirm-btn" bindtap="handlePayment">确认支付</button>
+  </view>
+</view>

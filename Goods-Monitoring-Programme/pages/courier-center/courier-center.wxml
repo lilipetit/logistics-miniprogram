@@ -1,0 +1,76 @@
+<view class="page-courier">
+  <navigation-bar title="快递员中心" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+  <view class="courier-main">
+    <!-- 包裹录入：固定在上，不随列表滚动 -->
+    <view class="package-entry-section">
+      <view class="package-entry-card" bindtap="enterPackage">
+        <view class="entry-icon">📱</view>
+        <text class="entry-text">包裹录入</text>
+      </view>
+    </view>
+
+    <!-- 我的配送：独立滚动区 -->
+    <scroll-view
+      class="delivery-scroll"
+      scroll-y
+      enhanced="{{true}}"
+      show-scrollbar="{{false}}"
+      bounces="{{true}}"
+      scroll-with-animation="{{true}}"
+    >
+      <view class="delivery-scroll-inner">
+        <view class="delivery-section">
+          <text class="section-title">我的配送</text>
+          <view class="delivery-list">
+            <view
+              class="delivery-card"
+              wx:for="{{deliveryList}}"
+              wx:key="id"
+              bindtap="viewDeliveryDetail"
+              data-id="{{item.id}}"
+            >
+              <view class="delivery-item delivery-item--with-copy">
+                <text class="delivery-label">快递单号</text>
+                <view class="delivery-value-wrap">
+                  <text class="delivery-value">{{item.trackingNumber}}</text>
+                  <text class="copy-btn" catchtap="onCopyTracking" data-text="{{item.trackingNumber}}">复制</text>
+                </view>
+              </view>
+              <view class="delivery-item delivery-item--sub">
+                <text class="delivery-label">收件地址</text>
+                <text class="delivery-value">{{item.receiverAddress || '-'}}</text>
+              </view>
+              <view class="delivery-item delivery-item--sub" wx:if="{{item.statusText}}">
+                <text class="delivery-label">状态</text>
+                <text class="delivery-value">{{item.statusText}}</text>
+              </view>
+            </view>
+            <view class="delivery-item" wx:if="{{deliveryList.length > 0}}">
+              <text class="delivery-label">提示：待取件 / 配送中 请在详情中更新</text>
+            </view>
+            <view class="delivery-item" wx:if="{{deliveryList.length === 0}}">
+              <text class="delivery-label">暂无配送任务</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部导航 -->
+  <view class="bottom-nav">
+    <view class="nav-item active">
+      <view class="nav-icon home-icon"></view>
+      <text class="nav-text">首页</text>
+    </view>
+    <view class="nav-item">
+      <view class="nav-icon delivery-icon"></view>
+      <text class="nav-text">配送</text>
+    </view>
+    <view class="nav-item" bindtap="goToProfile">
+      <view class="nav-icon profile-icon"></view>
+      <text class="nav-text">我的</text>
+    </view>
+  </view>
+</view>

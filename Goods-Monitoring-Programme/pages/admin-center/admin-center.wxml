@@ -1,0 +1,264 @@
+<view class="page-admin">
+  <navigation-bar title="管理员中心" back="{{true}}" color="white" background="#000000"></navigation-bar>
+
+  <view class="main-column">
+    <!-- 上区：统计卡片，固定不随下列表滚动 -->
+    <view class="stats-section">
+      <view class="stats-row">
+        <view class="stat-card" hover-class="stat-card--press" bindtap="goOrderManage">
+          <view class="stat-icon order-icon"></view>
+          <text class="stat-title">订单管理</text>
+          <text class="stat-subtitle">今日订单数 · 点击进入</text>
+          <text class="stat-value">{{todayOrders}}</text>
+        </view>
+        <view class="stat-card">
+          <view class="stat-icon courier-icon"></view>
+          <text class="stat-title">快递员管理</text>
+          <text class="stat-subtitle">在职快递员</text>
+          <text class="stat-value">{{courierCount}}<text class="stat-value-unit">人</text></text>
+        </view>
+      </view>
+      <view class="stats-row">
+        <view class="stat-card stat-card--chart" hover-class="stat-card--press" bindtap="goAdminStats">
+          <view class="stat-icon stats-icon"></view>
+          <text class="stat-title">数据统计</text>
+          <text class="stat-subtitle">近15日 · 点击查看</text>
+          <view class="stat-chart">
+            <view class="chart-bar" style="height: 40rpx;"></view>
+            <view class="chart-bar" style="height: 60rpx;"></view>
+            <view class="chart-bar" style="height: 50rpx;"></view>
+            <view class="chart-bar" style="height: 70rpx;"></view>
+          </view>
+        </view>
+        <view class="stat-card stat-card--compact">
+          <view class="stat-icon settings-icon"></view>
+          <text class="stat-title">系统设置</text>
+          <text class="stat-subtitle stat-subtitle--muted">配置与维护</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 下区：Tab、搜索、列表，仅此区域纵向滚动 -->
+    <scroll-view
+      class="admin-scroll"
+      scroll-y
+      enhanced="{{true}}"
+      show-scrollbar="{{true}}"
+      bounces="{{true}}"
+      enable-flex="{{true}}"
+      scroll-with-animation="{{true}}"
+    >
+      <view class="admin-panel">
+        <view class="panel-header">
+          <view class="segmented">
+            <view class="seg-item {{activeTab==='orders' ? 'active' : ''}}" data-tab="orders" bindtap="switchTab">全部快递</view>
+            <view class="seg-item {{activeTab==='users' ? 'active' : ''}}" data-tab="users" bindtap="switchTab">用户/司机</view>
+          </view>
+          <view class="refresh-icon" bindtap="refreshOrders">🔄</view>
+        </view>
+
+        <view wx:if="{{activeTab==='orders'}}" class="tab-content">
+          <view class="search-row">
+            <input class="search-input" placeholder="搜索：单号/订单号/客户/收件人/电话" placeholder-class="search-placeholder" value="{{orderKeyword}}" bindinput="onOrderKeywordInput" />
+          </view>
+
+          <view class="sub-title">待处理订单（可分配快递员）</view>
+          <view class="pending-list">
+            <view class="pending-card" wx:for="{{pendingOrders}}" wx:key="id">
+              <view class="pending-card__top">
+                <text class="pending-card__idx">{{index + 1}}</text>
+                <view class="pending-card__info">
+                  <text class="pending-card__name">{{item.userName || '客户'}}</text>
+                  <text class="pending-card__no">{{item.orderNumber || item.trackingNumber || '-'}}</text>
+                </view>
+              </view>
+              <view class="pending-card__actions">
+                <button class="btn-secondary" bindtap="viewOrderDetail" data-id="{{item.id}}">详情</button>
+                <button class="btn-primary" bindtap="assignCourier" data-id="{{item.id}}">分配快递员</button>
+              </view>
+            </view>
+            <view class="empty empty--inline" wx:if="{{pendingOrders.length===0}}">
+              <text class="empty-text">暂无待分配订单</text>
+            </view>
+          </view>
+
+          <view class="sub-title">全部快递信息</view>
+          <view class="order-list">
+            <view class="order-card" wx:for="{{filteredOrders}}" wx:key="id">
+              <view class="order-main" bindtap="viewOrderDetail" data-id="{{item.id}}">
+                <view class="order-line">
+                  <text class="order-key">单号</text>
+                  <text class="order-val highlight">{{item.trackingNumber || '-'}}</text>
+                </view>
+                <view class="order-line">
+                  <text class="order-key">订单</text>
+                  <text class="order-val">{{item.orderNumber || '-'}}</text>
+                </view>
+                <view class="order-line">
+                  <text class="order-key">客户</text>
+                  <text class="order-val">{{item.userName || '-'}}</text>
+                </view>
+                <view class="order-line">
+                  <text class="order-key">状态</text>
+                  <text class="order-val status-pill status-{{item.status}}">{{item.statusLabel}}</text>
+                </view>
+                <view class="order-line">
+                  <text class="order-key">支付状态</text>
+                  <text class="order-val payment-pill payment-{{item.paymentStatus || 'pending'}}">{{item.paymentLabel}}</text>
+                </view>
+              </view>
+              <view class="order-ops">
+                <button class="mini-btn" bindtap="changeOrderStatus" data-id="{{item.id}}">改状态</button>
+                <button class="mini-btn payment-btn" bindtap="changePaymentStatus" data-id="{{item.id}}">改支付</button>
+                <button class="mini-btn danger" bindtap="deleteOrder" data-id="{{item.id}}">删除</button>
+              </view>
+            </view>
+            <view class="empty" wx:if="{{filteredOrders.length===0}}">
+              <text class="empty-text">暂无订单</text>
+            </view>
+          </view>
+        </view>
+
+        <view wx:elif="{{activeTab==='users'}}" class="tab-content">
+          <view class="search-row search-row--stack">
+            <input class="search-input search-input--full" placeholder="搜索：用户名 / 手机号 / 角色" placeholder-class="search-placeholder" value="{{userKeyword}}" bindinput="onUserKeywordInput" />
+            <button class="add-btn" bindtap="addUser">新增用户</button>
+          </view>
+          <view class="filters">
+            <view class="filter {{userRoleFilter==='all' ? 'active' : ''}}" data-role="all" bindtap="setUserRoleFilter">全部</view>
+            <view class="filter {{userRoleFilter==='user' ? 'active' : ''}}" data-role="user" bindtap="setUserRoleFilter">用户</view>
+            <view class="filter {{userRoleFilter==='courier' ? 'active' : ''}}" data-role="courier" bindtap="setUserRoleFilter">司机</view>
+            <view class="filter {{userRoleFilter==='admin' ? 'active' : ''}}" data-role="admin" bindtap="setUserRoleFilter">管理员</view>
+          </view>
+
+          <view class="user-list">
+            <view class="user-card" wx:for="{{filteredUsers}}" wx:key="id">
+              <view class="user-left">
+                <view class="user-badge">{{item.roleLabel}}</view>
+                <text class="user-name">{{item.username}}</text>
+                <text class="user-phone">{{item.phone}}</text>
+              </view>
+              <view class="user-ops">
+                <button class="mini-btn" bindtap="editUser" data-id="{{item.id}}">编辑</button>
+                <button class="mini-btn danger" bindtap="deleteUser" data-id="{{item.id}}">删除</button>
+              </view>
+            </view>
+            <view class="empty" wx:if="{{filteredUsers.length===0}}">
+              <text class="empty-text">暂无用户</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="bottom-nav">
+    <view class="nav-item active">
+      <view class="nav-icon home-icon"></view>
+      <text class="nav-text">首页</text>
+    </view>
+    <view class="nav-item">
+      <view class="nav-icon order-icon-nav"></view>
+      <text class="nav-text">订单</text>
+    </view>
+    <view class="nav-item">
+      <view class="nav-icon package-icon"></view>
+      <text class="nav-text">快递</text>
+    </view>
+    <view class="nav-item">
+      <view class="nav-icon clear-icon"></view>
+      <text class="nav-text">清理</text>
+    </view>
+    <view class="nav-item" bindtap="goToProfile">
+      <view class="nav-icon profile-icon"></view>
+      <text class="nav-text">我的</text>
+    </view>
+  </view>
+</view>
+
+<!-- 弹层必须放在 page-admin 外：祖先 overflow:hidden 会在 Skyline 真机上裁剪 fixed 遮罩，导致整层不显示 -->
+<view
+  wx:if="{{showAddUserModal}}"
+  class="add-user-mask"
+  catchtouchmove="preventTouchMove"
+  bindtap="closeAddUserModal"
+>
+  <view class="add-user-dialog" catchtap="noop">
+    <text class="add-user-title">新增用户 / 司机 / 管理员</text>
+    <scroll-view scroll-y class="add-user-scroll" show-scrollbar="{{true}}" enable-flex="{{true}}">
+      <view class="add-user-field">
+        <text class="add-user-label">手机号</text>
+        <input
+          class="add-user-input"
+          type="number"
+          maxlength="11"
+          placeholder="请输入11位手机号"
+          placeholder-class="add-user-placeholder"
+          value="{{addUserPhone}}"
+          bindinput="onAddUserPhoneInput"
+        />
+      </view>
+      <view class="add-user-field">
+        <text class="add-user-label">用户名</text>
+        <input
+          class="add-user-input"
+          type="text"
+          placeholder="请输入用户名"
+          placeholder-class="add-user-placeholder"
+          value="{{addUserUsername}}"
+          bindinput="onAddUserUsernameInput"
+        />
+      </view>
+      <view class="add-user-field">
+        <text class="add-user-label">密码</text>
+        <input
+          class="add-user-input"
+          password="{{true}}"
+          placeholder="请输入登录密码"
+          placeholder-class="add-user-placeholder"
+          value="{{addUserPassword}}"
+          bindinput="onAddUserPasswordInput"
+        />
+      </view>
+      <view class="add-user-field add-user-field--roles">
+        <text class="add-user-label">角色（点选一项）</text>
+        <view class="add-user-roles">
+          <view
+            class="add-user-role-row {{addUserRole === 'user' ? 'add-user-role-row--active' : ''}}"
+            bindtap="selectAddUserRole"
+            data-role="user"
+          >
+            <view class="role-check">
+              <text class="role-check-mark" wx:if="{{addUserRole === 'user'}}">✓</text>
+            </view>
+            <text class="add-user-role-text">普通用户</text>
+          </view>
+          <view
+            class="add-user-role-row {{addUserRole === 'courier' ? 'add-user-role-row--active' : ''}}"
+            bindtap="selectAddUserRole"
+            data-role="courier"
+          >
+            <view class="role-check">
+              <text class="role-check-mark" wx:if="{{addUserRole === 'courier'}}">✓</text>
+            </view>
+            <text class="add-user-role-text">司机</text>
+          </view>
+          <view
+            class="add-user-role-row {{addUserRole === 'admin' ? 'add-user-role-row--active' : ''}}"
+            bindtap="selectAddUserRole"
+            data-role="admin"
+          >
+            <view class="role-check">
+              <text class="role-check-mark" wx:if="{{addUserRole === 'admin'}}">✓</text>
+            </view>
+            <text class="add-user-role-text">管理员</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="add-user-actions">
+      <button class="add-user-btn add-user-btn--cancel" bindtap="closeAddUserModal">取消</button>
+      <button class="add-user-btn add-user-btn--ok" bindtap="confirmAddUser">确定</button>
+    </view>
+  </view>
+</view>

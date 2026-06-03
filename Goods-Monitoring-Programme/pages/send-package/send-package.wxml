@@ -1,0 +1,51 @@
+<navigation-bar title="首页" back="{{true}}" color="white" background="#000000"></navigation-bar>
+<view class="container">
+  <!-- 寄快递按钮 -->
+  <view class="send-section">
+    <view class="send-btn-circle" bindtap="goToFillInfo">
+      <text class="plus-icon">+</text>
+      <text class="send-text">寄快递</text>
+    </view>
+  </view>
+
+  <!-- 我的快递列表 -->
+  <view class="package-section">
+    <text class="section-title">我的快递</text>
+    <view class="package-list">
+      <view 
+        class="package-item" 
+        wx:for="{{packageList}}" 
+        wx:key="id"
+        bindtap="viewPackageDetail"
+        data-id="{{item.id}}"
+      >
+        <text class="package-label">快递单号</text>
+        <text class="package-value">{{item.trackingNumber}}</text>
+        <text class="copy-btn" catchtap="onCopyTracking" data-text="{{item.trackingNumber}}">复制</text>
+        <text class="package-arrow">></text>
+      </view>
+      <view 
+        class="package-item" 
+        wx:if="{{packageList.length === 0}}"
+      >
+        <text class="package-label">暂无快递信息</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航 -->
+  <view class="bottom-nav">
+    <view class="nav-item active">
+      <view class="nav-icon home-icon"></view>
+      <text class="nav-text">首页</text>
+    </view>
+    <view class="nav-item" bindtap="goToFillInfo">
+      <view class="nav-icon send-icon"></view>
+      <text class="nav-text">寄件</text>
+    </view>
+    <view class="nav-item" bindtap="goToProfile">
+      <view class="nav-icon profile-icon"></view>
+      <text class="nav-text">我的</text>
+    </view>
+  </view>
+</view>
