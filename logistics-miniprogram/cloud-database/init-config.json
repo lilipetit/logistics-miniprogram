@@ -1,0 +1,99 @@
+{
+  "提示": "微信云开发 - 云数据库初始化集合配置",
+  "version": "1.0",
+  "创建日期": "2026-06-03",
+
+  "集合列表": {
+    "users": {
+      "description": "用户表",
+      "indexes": [
+        {"name": "idx_phone", "fields": {"phone": 1}, "unique": true},
+        {"name": "idx_openid", "fields": {"openid": 1}, "unique": true},
+        {"name": "idx_role", "fields": {"role": 1}}
+      ]
+    },
+
+    "orders": {
+      "description": "订单表",
+      "indexes": [
+        {"name": "idx_tracking_no", "fields": {"tracking_no": 1}, "unique": true},
+        {"name": "idx_user_id", "fields": {"user_id": 1}},
+        {"name": "idx_courier_id", "fields": {"courier_id": 1}},
+        {"name": "idx_status", "fields": {"status": 1}},
+        {"name": "idx_created_at", "fields": {"created_at": -1}}
+      ]
+    },
+
+    "order_tracking": {
+      "description": "订单轨迹表",
+      "indexes": [
+        {"name": "idx_order_id", "fields": {"order_id": 1}},
+        {"name": "idx_created_at", "fields": {"created_at": -1}}
+      ]
+    },
+
+    "accessories": {
+      "description": "配件库存表",
+      "indexes": [
+        {"name": "idx_name", "fields": {"name": 1}, "unique": true},
+        {"name": "idx_stock", "fields": {"stock": 1}}
+      ]
+    },
+
+    "accessory_logs": {
+      "description": "配件出入库日志表",
+      "indexes": [
+        {"name": "idx_accessory_id", "fields": {"accessory_id": 1}},
+        {"name": "idx_created_at", "fields": {"created_at": -1}}
+      ]
+    },
+
+    "print_logs": {
+      "description": "打印记录表",
+      "indexes": [
+        {"name": "idx_order_id", "fields": {"order_id": 1}},
+        {"name": "idx_created_at", "fields": {"created_at": -1}}
+      ]
+    }
+  },
+
+  "数据库权限配置": {
+    "users": {
+      "read": "doc._openid == auth.openid || auth.openid in ['', '']",
+      "write": "doc._openid == auth.openid"
+    },
+
+    "orders": {
+      "read": "true",
+      "write": "auth.openid in ['', '']"
+    },
+
+    "order_tracking": {
+      "read": "true",
+      "write": "auth.openid in ['', '']"
+    },
+
+    "accessories": {
+      "read": "true",
+      "write": "auth.openid in ['', '']"
+    },
+
+    "accessory_logs": {
+      "read": "auth.openid in ['', '']",
+      "write": "auth.openid in ['', '']"
+    },
+
+    "print_logs": {
+      "read": "true",
+      "write": "auth.openid in ['', '']"
+    }
+  },
+
+  "注意事项": [
+    "1. 在微信开发者工具中打开云开发控制台",
+    "2. 创建上述所有集合",
+    "3. 为每个集合创建相应的索引",
+    "4. 配置集合的数据权限",
+    "5. 部署云函数"
+  ]
+}
