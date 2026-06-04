@@ -1,8 +1,19 @@
 // app.js
 App({
   onLaunch() {
+    // 初始化云开发
+    this.initCloud();
+    
     // 初始化存储数据
     this.initStorage();
+  },
+
+  initCloud() {
+    // 初始化微信云开发
+    wx.cloud.init({
+      env: 'your-cloud-env-id', // ⚠️ 替换为您的云开发环境 ID
+      traceUser: true
+    });
   },
 
   initStorage() {
@@ -18,6 +29,7 @@ App({
   },
 
   globalData: {
-    userInfo: null
+    userInfo: null,
+    isLogin: false
   }
 })
